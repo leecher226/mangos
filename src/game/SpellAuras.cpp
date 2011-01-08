@@ -754,6 +754,10 @@ void AreaAura::Update(uint32 diff)
                 // flag for seelction is need apply aura to current iteration target
                 bool apply = true;
 
+                // The Might of Mograine must not affect scourge soldiers, must affect only players and DK bosses
+                if (GetSpellProto()->Id == 53642 && ((*tIter)->GetEntry() == 29186 || (*tIter)->GetEntry() == 29190 || (*tIter)->GetEntry() == 29219 || (*tIter)->GetEntry() == 29206))
+                    apply = false;
+
                 // we need ignore present caster self applied are auras sometime
                 // in cases if this only auras applied for spell effect
                 Unit::SpellAuraHolderBounds spair = (*tIter)->GetSpellAuraHolderBounds(GetId());
@@ -5242,6 +5246,7 @@ void Aura::HandlePeriodicTriggerSpell(bool apply, bool /*Real*/)
 
                 return;
             case 51912:                                     // Ultra-Advanced Proto-Typical Shortening Blaster
+            case 53102:                                     // Scepter of Domination
                 if (m_removeMode == AURA_REMOVE_BY_EXPIRE)
                 {
                     if (Unit* pCaster = GetCaster())
